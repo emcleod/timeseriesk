@@ -142,5 +142,4 @@ class ImmutableLocalDateTimeSeriesTest {
         assertEquals(endDate, tailSeries.getKeyAtIndex(3))
         assertEquals(9, tailSeries.getValueAtIndex(3))
     }
-
 }
