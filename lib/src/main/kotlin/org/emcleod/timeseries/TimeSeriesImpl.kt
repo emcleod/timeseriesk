@@ -80,11 +80,10 @@ open class ImmutableLocalDateTimeSeries<out V> protected constructor(times: List
 
     inline fun all(predicate: (Map.Entry<LocalDate, V>) -> Boolean): Boolean {
         return entries.all { entry -> predicate(entry) }
-    }
-
+    }    
 }
 
-class ImmutableLocalDateDoubleTimeSeries private constructor(times: List<LocalDate>, values: List<Double>) :
+public class ImmutableLocalDateDoubleTimeSeries private constructor(times: List<LocalDate>, values: List<Double>) :
     ImmutableLocalDateTimeSeries<Double>(times, values) {
 
     companion object {
@@ -127,6 +126,7 @@ class ImmutableLocalDateDoubleTimeSeries private constructor(times: List<LocalDa
         }
         return ImmutableLocalDateDoubleTimeSeries.fromMap(entries.map { (times, value) -> times to value / a.toDouble() }.toMap())
     }
+
 }
 // 3. Indexing Operator (`[]`):
 //    - Signature: `operator fun get(index: Int): Double`

@@ -18,110 +18,110 @@ class ImmutableLocalDateTimeSeriesOperatorTest {
     
     @Test
     fun testDoublePlusInt() {
-        val summed = timeSeries + 2
+        val result = timeSeries + 2
         val expected = ImmutableLocalDateDoubleTimeSeries.of(
             dates, listOf(12.0, 22.0, 32.0, 42.0, 52.0)
         )
-        assertEquals(expected, summed)
+        assertEquals(expected, result)
     }
 
     @Test
     fun testDoublePlusLong() {
-        val summed = timeSeries + 2L
+        val result = timeSeries + 2L
         val expected = ImmutableLocalDateDoubleTimeSeries.of(
             dates, listOf(12.0, 22.0, 32.0, 42.0, 52.0)
         )
-        assertEquals(expected, summed)
+        assertEquals(expected, result)
     }
 
     @Test
     fun testDoublePlusDouble() {
-        val summed = timeSeries + 2.0
+        val result = timeSeries + 2.0
         val expected = ImmutableLocalDateDoubleTimeSeries.of(
             dates, listOf(12.0, 22.0, 32.0, 42.0, 52.0)
         )
-        assertEquals(expected, summed)
+        assertEquals(expected, result)
     }
 
     @Test
     fun testDoubleMinusInt() {
-        val summed = timeSeries - 2
+        val result = timeSeries - 2
         val expected = ImmutableLocalDateDoubleTimeSeries.of(
             dates, listOf(8.0, 18.0, 28.0, 38.0, 48.0)
         )
-        assertEquals(expected, summed)
+        assertEquals(expected, result)
     }
 
     @Test
     fun testDoubleMinusLong() {
-        val summed = timeSeries - 2L
+        val result = timeSeries - 2L
         val expected = ImmutableLocalDateDoubleTimeSeries.of(
             dates, listOf(8.0, 18.0, 28.0, 38.0, 48.0)
         )
-        assertEquals(expected, summed)
+        assertEquals(expected, result)
     }
 
     @Test
     fun testDoubleMinusDouble() {
-        val summed = timeSeries - 2.0
+        val result = timeSeries - 2.0
         val expected = ImmutableLocalDateDoubleTimeSeries.of(
             dates, listOf(8.0, 18.0, 28.0, 38.0, 48.0)
         )
-        assertEquals(expected, summed)
+        assertEquals(expected, result)
     }
 
     @Test
     fun testDoubleTimesInt() {
-        val summed = timeSeries * 2
+        val result = timeSeries * 2
         val expected = ImmutableLocalDateDoubleTimeSeries.of(
             dates, listOf(20.0, 40.0, 60.0, 80.0, 100.0)
         )
-        assertEquals(expected, summed)
+        assertEquals(expected, result)
     }
 
     @Test
     fun testDoubleTimesLong() {
-        val summed = timeSeries * 2L
+        val result = timeSeries * 2L
         val expected = ImmutableLocalDateDoubleTimeSeries.of(
             dates, listOf(20.0, 40.0, 60.0, 80.0, 100.0)
         )
-        assertEquals(expected, summed)
+        assertEquals(expected, result)
     }
 
     @Test
     fun testDoubleTimesDouble() {
-        val summed = timeSeries * 2.0
+        val result = timeSeries * 2.0
         val expected = ImmutableLocalDateDoubleTimeSeries.of(
             dates, listOf(20.0, 40.0, 60.0, 80.0, 100.0)
         )
-        assertEquals(expected, summed)
+        assertEquals(expected, result)
     }
 
     @Test
     fun testDoubleDivideInt() {
-        val summed = timeSeries / 2
+        val result = timeSeries / 2
         val expected = ImmutableLocalDateDoubleTimeSeries.of(
             dates, listOf(5.0, 10.0, 15.0, 20.0, 25.0)
         )
-        assertEquals(expected, summed)
+        assertEquals(expected, result)
     }
 
     @Test
     fun testDoubleDivideLong() {
-        val summed = timeSeries / 2L
+        val result = timeSeries / 2L
         val expected = ImmutableLocalDateDoubleTimeSeries.of(
             dates, listOf(5.0, 10.0, 15.0, 20.0, 25.0)
         )
-        assertEquals(expected, summed)
+        assertEquals(expected, result)
     }
 
     @Test
     fun testDoubleDivideDouble() {
-        val summed = timeSeries / 2.0
+        val result = timeSeries / 2.0
         val expected = ImmutableLocalDateDoubleTimeSeries.of(
             dates, listOf(5.0, 10.0, 15.0, 20.0, 25.0)
         )
-        assertEquals(expected, summed)
+        assertEquals(expected, result)
     }
 
     @Test
@@ -142,8 +142,8 @@ class ImmutableLocalDateTimeSeriesOperatorTest {
         val result = series1 + series2
 
         assertEquals(2, result.entries.size)
-        assertEquals(15.0, result.entries[LocalDate.of(2023, 1, 1)])
-        assertEquals(35.0, result.entries[LocalDate.of(2023, 1, 2)])
+        assertEquals(15.0, result[LocalDate.of(2023, 1, 1)])
+        assertEquals(35.0, result[LocalDate.of(2023, 1, 2)])
     }
 
     @Test
@@ -163,10 +163,10 @@ class ImmutableLocalDateTimeSeriesOperatorTest {
 
         val result = series1 + series2
 
-        assertEquals(3, result.entries.size)
-        assertEquals(10.0, result.entries[LocalDate.of(2023, 1, 1)])
-        assertEquals(35.0, result.entries[LocalDate.of(2023, 1, 2)])
-        assertEquals(30.0, result.entries[LocalDate.of(2023, 1, 3)])
+        assertEquals(3, result.size)
+        assertEquals(10.0, result[LocalDate.of(2023, 1, 1)])
+        assertEquals(35.0, result[LocalDate.of(2023, 1, 2)])
+        assertEquals(30.0, result[LocalDate.of(2023, 1, 3)])
     }
 
     @Test
@@ -187,7 +187,7 @@ class ImmutableLocalDateTimeSeriesOperatorTest {
         val result1 = series1 + series2
         val result2 = series2 + series1
 
-        assertEquals(result1.entries, result2.entries)
+        assertEquals(result1, result2)
     }
 
     @Test
@@ -222,9 +222,9 @@ class ImmutableLocalDateTimeSeriesOperatorTest {
 
         val result = series1 - series2
 
-        assertEquals(2, result.entries.size)
-        assertEquals(5.0, result.entries[LocalDate.of(2023, 1, 1)])
-        assertEquals(5.0, result.entries[LocalDate.of(2023, 1, 2)])
+        assertEquals(2, result.size)
+        assertEquals(5.0, result[LocalDate.of(2023, 1, 1)])
+        assertEquals(5.0, result[LocalDate.of(2023, 1, 2)])
     }
 
     @Test
@@ -244,10 +244,10 @@ class ImmutableLocalDateTimeSeriesOperatorTest {
 
         val result = series1 - series2
 
-        assertEquals(3, result.entries.size)
-        assertEquals(10.0, result.entries[LocalDate.of(2023, 1, 1)])
-        assertEquals(5.0, result.entries[LocalDate.of(2023, 1, 2)])
-        assertEquals(-30.0, result.entries[LocalDate.of(2023, 1, 3)])
+        assertEquals(3, result.size)
+        assertEquals(10.0, result[LocalDate.of(2023, 1, 1)])
+        assertEquals(5.0, result[LocalDate.of(2023, 1, 2)])
+        assertEquals(-30.0, result[LocalDate.of(2023, 1, 3)])
     }
 
     @Test

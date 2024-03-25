@@ -11,14 +11,14 @@ class ImmutableLocalDateTimeSeriesTest {
     private val values = (0..9).toList()
 
     @Test
-    fun `test empty series`() {
+    fun testEmptySeries() {
         val series = ImmutableLocalDateTimeSeries.empty<String>()
         assertTrue(series.isEmpty())
         assertEquals(0, series.entries.size)
     }
 
     @Test
-    fun `test creating series from map`() {
+    fun testCreatingSeriesFromMap() {
         val map = keys.zip(values).toMap().toSortedMap()
         val series = ImmutableLocalDateTimeSeries.fromMap(map)
         assertFalse(series.isEmpty())
@@ -30,7 +30,7 @@ class ImmutableLocalDateTimeSeriesTest {
     }
 
     @Test
-    fun `test creating series from lists`() {
+    fun testCreatingSeriesFromLists() {
         val series = ImmutableLocalDateTimeSeries.of(keys, values)
         assertFalse(series.isEmpty())
         assertEquals(10, series.entries.size)
@@ -41,7 +41,7 @@ class ImmutableLocalDateTimeSeriesTest {
     }
 
     @Test
-    fun `test subSeries with inclusive start and exclusive end 1`() {
+    fun testSubSeriesWithInclusiveStartAndExclusiveEnd1() {
         val series = ImmutableLocalDateTimeSeries.of(keys, values)
         val subSeries = series.subSeries(startDate.plusDays(2), endDate.minusDays(2))
         assertEquals(5, subSeries.entries.size)
@@ -52,7 +52,7 @@ class ImmutableLocalDateTimeSeriesTest {
     }
 
     @Test
-    fun `test subSeries with inclusive start and exclusive end 2`() {
+    fun testSubSeriesWithInclusiveStartAndExclusiveEnd() {
         val series = ImmutableLocalDateTimeSeries.of(keys, values)
         val subSeries = series.subSeries(startDate.plusDays(2), true, endDate.minusDays(2), false)
         assertEquals(5, subSeries.entries.size)
@@ -63,7 +63,7 @@ class ImmutableLocalDateTimeSeriesTest {
     }
 
     @Test
-    fun `test subSeries with inclusive start and inclusive end`() {
+    fun testSubSeriesWithInclusiveStartAndInclusiveEnd() {
         val series = ImmutableLocalDateTimeSeries.of(keys, values)
         val subSeries = series.subSeries(startDate.plusDays(2), true, endDate.minusDays(2), true)
         assertEquals(6, subSeries.entries.size)
@@ -74,7 +74,7 @@ class ImmutableLocalDateTimeSeriesTest {
     }
 
     @Test
-    fun `test subSeries with exclusive start and inclusive end`() {
+    fun testSubSeriesWithExclusiveStartAndInclusiveEnd() {
         val series = ImmutableLocalDateTimeSeries.of(keys, values)
         val subSeries = series.subSeries(startDate.plusDays(2), false, endDate.minusDays(2), true)
         assertEquals(5, subSeries.entries.size)
@@ -85,7 +85,7 @@ class ImmutableLocalDateTimeSeriesTest {
     }
 
     @Test
-    fun `test subSeries with exclusive start and exclusive end`() {
+    fun testSubSeriesWithExclusiveStartAndExclusiveEnd() {
         val series = ImmutableLocalDateTimeSeries.of(keys, values)
         val subSeries = series.subSeries(startDate.plusDays(2), false, endDate.minusDays(2), false)
         assertEquals(4, subSeries.entries.size)
@@ -96,7 +96,7 @@ class ImmutableLocalDateTimeSeriesTest {
     }
 
     @Test
-    fun `test head with number of items`() {
+    fun testHeadWithNumberOfItems() {
         val series = ImmutableLocalDateTimeSeries.of(keys, values)
         val headSeries = series.head(3)
         assertEquals(3, headSeries.entries.size)
@@ -107,7 +107,7 @@ class ImmutableLocalDateTimeSeriesTest {
     }
 
     @Test
-    fun `test head with end time`() {
+    fun testHeadWithEndTime() {
         val series = ImmutableLocalDateTimeSeries.of(keys, values)
         val headSeries = series.head(startDate.plusDays(5))
         assertEquals(5, headSeries.entries.size)
@@ -118,7 +118,7 @@ class ImmutableLocalDateTimeSeriesTest {
     }
 
     @Test
-    fun `test tail with number of items`() {
+    fun testTailWithNumberOfItems() {
         val series = ImmutableLocalDateTimeSeries.of(keys, values)
         val tailSeries = series.tail(3)
         assertEquals(3, tailSeries.entries.size)
@@ -129,7 +129,7 @@ class ImmutableLocalDateTimeSeriesTest {
     }
 
     @Test
-    fun `test tail with start time`() {
+    fun testTailWithStartTime() {
         val series = ImmutableLocalDateTimeSeries.of(keys, values)
         val tailSeries = series.tail(startDate.plusDays(6))
         assertEquals(4, tailSeries.entries.size)
@@ -138,4 +138,5 @@ class ImmutableLocalDateTimeSeriesTest {
         assertEquals(endDate, tailSeries.getKeyAtIndex(3))
         assertEquals(9, tailSeries.getValueAtIndex(3))
     }
+
 }

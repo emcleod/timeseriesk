@@ -41,7 +41,6 @@ kotlin {
         }
         val test by getting {
             kotlin.srcDir(listOf("src/test/kotlin"))
-//            runtimeClasspath += main.get().runtimeClasspath
         }
     }
     jacoco {
