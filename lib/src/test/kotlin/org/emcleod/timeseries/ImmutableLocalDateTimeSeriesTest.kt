@@ -44,10 +44,6 @@ class ImmutableLocalDateTimeSeriesTest {
     fun `test subSeries with inclusive start and exclusive end 1`() {
         val series = ImmutableLocalDateTimeSeries.of(keys, values)
         val subSeries = series.subSeries(startDate.plusDays(2), endDate.minusDays(2))
-        println(series)
-        println(startDate.plusDays(2))
-        println(endDate.minusDays(2))
-        println(subSeries)
         assertEquals(5, subSeries.entries.size)
         assertEquals(startDate.plusDays(2), subSeries.getKeyAtIndex(0))
         assertEquals(2, subSeries.getValueAtIndex(0))

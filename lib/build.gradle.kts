@@ -24,13 +24,11 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("com.google.guava:guava:30.1.1-jre")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
+    testImplementation("org.junit.platform:junit-platform-runner:1.7.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
+    testImplementation(kotlin("test-junit"))
+    testImplementation(sourceSets.main.get().output)
     api("org.apache.commons:commons-math3:3.6.1")
-}
-
-tasks.test {
-    useJUnitPlatform()
-    finalizedBy(tasks.jacocoTestReport) 
 }
 
 kotlin {
@@ -43,11 +41,22 @@ kotlin {
         }
         val test by getting {
             kotlin.srcDir(listOf("src/test/kotlin"))
+//            runtimeClasspath += main.get().runtimeClasspath
         }
     }
     jacoco {
         toolVersion = "0.8.7"
     }
+}
+
+tasks.test {
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
+    testLogging.showStandardStreams = true
+    useJUnitPlatform()
+//    debug = true
+    finalizedBy(tasks.jacocoTestReport) 
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -59,9 +68,6 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 tasks.jacocoTestReport {
     dependsOn(tasks.test) 
     reports {
-        // xml.required.set(true)
-        // csv.required.set(false)
-        // html.required.set(true)
         xml.required.set(false)
         csv.required.set(false)
         html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
