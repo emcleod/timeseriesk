@@ -101,14 +101,52 @@ class ImmutableLocalDateDoubleTimeSeries private constructor(times: List<LocalDa
         }
     }
 
-    operator fun plus(a: Int) = 
-        ImmutableLocalDateDoubleTimeSeries.fromMap(entries.map { (times, value) -> times to value + a }.toMap())
-    operator fun plus(a: Long) = 
-        ImmutableLocalDateDoubleTimeSeries.fromMap(entries.map { (times, value) -> times to value + a }.toMap())
-    operator fun plus(a: Double) = 
-        ImmutableLocalDateDoubleTimeSeries.fromMap(entries.map { (times, value) -> times to value + a }.toMap())
-
+    operator fun plus(a: Number) = 
+        ImmutableLocalDateDoubleTimeSeries.fromMap(entries.map { (times, value) -> times to value + a.toDouble() }.toMap())
+    operator fun <S : Number> plus(other: ImmutableLocalDateTimeSeries<S>): ImmutableLocalDateTimeSeries<Double> {
+        val dates = (entries.keys + other.entries.keys).sorted()
+        val values = dates.map { date ->
+            (entries[date]?.toDouble() ?: 0.0) + (other.entries[date]?.toDouble() ?: 0.0)
+        }
+        return ImmutableLocalDateDoubleTimeSeries.fromMap(dates.zip(values).toMap())
+    }
+    operator fun minus(a: Number) = 
+        ImmutableLocalDateDoubleTimeSeries.fromMap(entries.map { (times, value) -> times to value - a.toDouble() }.toMap())
+    operator fun <S : Number> minus(other: ImmutableLocalDateTimeSeries<S>): ImmutableLocalDateTimeSeries<Double> {
+        val dates = (entries.keys + other.entries.keys).sorted()
+        val values = dates.map { date ->
+            (entries[date]?.toDouble() ?: 0.0) - (other.entries[date]?.toDouble() ?: 0.0)
+        }
+        return ImmutableLocalDateDoubleTimeSeries.fromMap(dates.zip(values).toMap())
+    }
+    operator fun times(a: Number) = 
+        ImmutableLocalDateDoubleTimeSeries.fromMap(entries.map { (times, value) -> times to value * a.toDouble() }.toMap())
+    operator fun div(a: Number): ImmutableLocalDateTimeSeries<Double> {
+        if (a == 0) {
+            throw IllegalArgumentException("Cannot divide time series by zero")
+        }
+        return ImmutableLocalDateDoubleTimeSeries.fromMap(entries.map { (times, value) -> times to value / a.toDouble() }.toMap())
+    }
 }
+// 3. Indexing Operator (`[]`):
+//    - Signature: `operator fun get(index: Int): Double`
+//    - Signature: `operator fun get(range: IntRange): TimeSeries`
+//    - Convention: The indexing operator should return the value at the specified index or a new `TimeSeries` object representing a subsequence of the original time series.
+//    - Error Handling: If the index is out of bounds, you can throw an `IndexOutOfBoundsException`.}
+// 6. Shift Operators (`<<`, `>>`):
+//    - Signature: `operator fun shift(periods: Int): TimeSeries`
+//    - Convention: These operators should return a new `TimeSeries` object with the data points shifted forward or backward in time by the specified number of periods.
+//    - Error Handling: No specific error handling is required for these operators.
+//    7. Function Call Operator (`()`):
+//    - Signature: `operator fun invoke(transformation: (Double) -> Double): TimeSeries`
+//    - Convention: The function call operator should apply the specified transformation function to each data point in the time series and return a new `TimeSeries` object with the transformed values.
+//    - Error Handling: No specific error handling is required for this operator.
+
+// 8. Iteration Operators:
+//    - Signature: `operator fun iterator(): Iterator<Double>`
+//    - Convention: The `iterator()` function should return an `Iterator` object that allows iterating over the data points of the time series.
+//    - Error Handling: No specific error handling is required for this operator.
+
 
 
 class ImmutableLocalDateIntTimeSeries private constructor(times: List<LocalDate>, values: List<Int>) :

@@ -7,41 +7,30 @@
  */
 
 plugins {
-    // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
     id("org.jetbrains.kotlin.jvm") version "1.7.20"
-
-    // Apply the java-library plugin for API and implementation separation.
     `java-library`
+    jacoco
 }
 
 group = "org.emcleod"
 version = "1.0-SNAPSHOT"
 
 repositories {
-    // Use Maven Central for resolving dependencies.
     mavenCentral()
 }
 
 dependencies {
-    // Align versions of all Kotlin components
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-
-    // Use the Kotlin JDK 8 standard library.
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-
-    // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation("com.google.guava:guava:30.1.1-jre")
-
-    // Use JUnit Jupiter for testing.
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
-
-    // This dependency is exported to consumers, that is to say found on their compile classpath.
     api("org.apache.commons:commons-math3:3.6.1")
 }
 
 tasks.test {
     useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport) 
 }
 
 kotlin {
@@ -56,6 +45,9 @@ kotlin {
             kotlin.srcDir(listOf("src/test/kotlin"))
         }
     }
+    jacoco {
+        toolVersion = "0.8.7"
+    }
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -64,3 +56,24 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     }
 }
 
+tasks.jacocoTestReport {
+    dependsOn(tasks.test) 
+    reports {
+        // xml.required.set(true)
+        // csv.required.set(false)
+        // html.required.set(true)
+        xml.required.set(false)
+        csv.required.set(false)
+        html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
+    }
+}
+
+tasks.jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = "0.1".toBigDecimal() 
+            }
+        }
+    }
+}
