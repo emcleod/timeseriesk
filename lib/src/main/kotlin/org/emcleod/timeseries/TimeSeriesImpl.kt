@@ -161,3 +161,4 @@ class ImmutableLocalDateLongTimeSeries private constructor(times: List<LocalDate
         ImmutableLocalDateDoubleTimeSeries.fromMap(entries.map { (times, value) -> times to value + a }.toMap())
 
 }
+
