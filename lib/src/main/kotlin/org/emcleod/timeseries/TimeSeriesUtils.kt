@@ -17,8 +17,10 @@ fun ImmutableLocalDateDoubleTimeSeries.intersect(other: ImmutableLocalDateDouble
     val times = mutableListOf<LocalDate>()
     val values = mutableListOf<Double>()
     other.forEach { date, _ -> 
-        times.add(date)
-        values.add(this.get(date) ?: 0.0) // TODO what happens when there's no value
+        if (this.contains(date)) {
+            times.add(date)
+            values.add(this.get(date)!!) 
+        }
     }
     return ImmutableLocalDateDoubleTimeSeries.of(times, values)
 }

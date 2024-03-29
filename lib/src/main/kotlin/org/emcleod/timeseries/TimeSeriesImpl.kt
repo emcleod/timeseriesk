@@ -133,10 +133,6 @@ public class ImmutableLocalDateDoubleTimeSeries private constructor(times: List<
 //    - Signature: `operator fun get(range: IntRange): TimeSeries`
 //    - Convention: The indexing operator should return the value at the specified index or a new `TimeSeries` object representing a subsequence of the original time series.
 //    - Error Handling: If the index is out of bounds, you can throw an `IndexOutOfBoundsException`.}
-// 6. Shift Operators (`<<`, `>>`):
-//    - Signature: `operator fun shift(periods: Int): TimeSeries`
-//    - Convention: These operators should return a new `TimeSeries` object with the data points shifted forward or backward in time by the specified number of periods.
-//    - Error Handling: No specific error handling is required for these operators.
 //    7. Function Call Operator (`()`):
 //    - Signature: `operator fun invoke(transformation: (Double) -> Double): TimeSeries`
 //    - Convention: The function call operator should apply the specified transformation function to each data point in the time series and return a new `TimeSeries` object with the transformed values.

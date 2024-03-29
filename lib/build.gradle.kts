@@ -7,7 +7,7 @@
  */
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.7.20"
+    id("org.jetbrains.kotlin.jvm") version "1.9.22"
     `java-library`
     jacoco
 }
@@ -17,6 +17,7 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    maven { url = uri("https://dl.bintray.com/plotly-android/plotly-android") }
 }
 
 dependencies {
@@ -29,6 +30,7 @@ dependencies {
     testImplementation(kotlin("test-junit"))
     testImplementation(sourceSets.main.get().output)
     api("org.apache.commons:commons-math3:3.6.1")
+    implementation("org.jetbrains.kotlinx:kandy-lets-plot:0.6.0")
 }
 
 kotlin {
@@ -54,7 +56,6 @@ tasks.test {
     }
     testLogging.showStandardStreams = true
     useJUnitPlatform()
-//    debug = true
     finalizedBy(tasks.jacocoTestReport) 
 }
 
