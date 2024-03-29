@@ -84,6 +84,28 @@ class PearsonCorrelationTest {
             listOf(4.0, 5.0, 6.0, 7.0))
         assertThrows(IllegalArgumentException::class.java) {
             pearsonCorrelation(ts1, ts2)
-        } 
+        }
     }
+
+    @Test
+    fun testCorrelationWithEmptySeries() {
+        val ts = ImmutableLocalDateDoubleTimeSeries.empty()
+        assertThrows(IllegalArgumentException::class.java) {
+            pearsonCorrelation(ts, ts)
+        }
+    }
+
+    @Test
+    fun testCorrelationWithInsufficientData() {
+        val ts1 = ImmutableLocalDateDoubleTimeSeries.of(
+            listOf(LocalDate.of(2023, 1, 1)), listOf(0.0)
+        )
+        val ts2 = ImmutableLocalDateDoubleTimeSeries.of(
+            listOf(LocalDate.of(2023, 1, 1)), listOf(0.1)
+        )
+        assertThrows(IllegalArgumentException::class.java) {
+            pearsonCorrelation(ts1, ts2)
+        }
+    }
+
 }

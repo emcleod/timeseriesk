@@ -17,13 +17,13 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
-    maven { url = uri("https://dl.bintray.com/plotly-android/plotly-android") }
+    maven("https://packages.jetbrains.team/maven/p/kds/kotlin-ds-maven")
 }
 
 dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("com.google.guava:guava:30.1.1-jre")
+    implementation("com.google.guava:guava:33.0.0-jre")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
     testImplementation("org.junit.platform:junit-platform-runner:1.7.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
@@ -31,6 +31,7 @@ dependencies {
     testImplementation(sourceSets.main.get().output)
     api("org.apache.commons:commons-math3:3.6.1")
     implementation("org.jetbrains.kotlinx:kandy-lets-plot:0.6.0")
+    implementation("org.jetbrains.kotlinx:kotlin-statistics-jvm:0.2.1")
 }
 
 kotlin {
