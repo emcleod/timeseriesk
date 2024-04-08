@@ -4,6 +4,9 @@ import org.emcleod.timeseries.ImmutableLocalDateDoubleTimeSeries
 import org.knowm.xchart.SwingWrapper
 import org.knowm.xchart.XYChartBuilder
 import org.knowm.xchart.XYSeries
+import org.knowm.xchart.style.markers.SeriesMarkers
+import java.awt.Color
+import java.awt.Font
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import kotlin.random.Random
@@ -23,14 +26,21 @@ fun timeSeriesLinePlot(timeSeries: ImmutableLocalDateDoubleTimeSeries) {
         isChartTitleVisible = true
         isLegendVisible = false
         markerSize = 8
+        chartTitleFont = Font("Arial", Font.BOLD, 20)
+        axisTitleFont = Font("Arial", Font.PLAIN, 16)
+        axisTickLabelsFont = Font("Arial", Font.PLAIN, 12)
+        setPlotGridHorizontalLinesVisible(false)
+        setPlotGridVerticalLinesVisible(false)
+        setPlotBorderVisible(false)
+        setPlotBackgroundColor(Color.WHITE)
+        setChartBackgroundColor(Color.WHITE)
     }
 
-    val xData = timeSeries.entries.map { (date, _) -> timeSeries.getKeyAtIndex(0).until(date, ChronoUnit.DAYS) }.toList()
-    val yData = timeSeries.entries.map { (_, value) -> value }.toList()
-    // Add data to the chart
-    chart.addSeries("Data", xData, yData)
+    val xData = timeSeries.getEntries().map { (date, _) -> timeSeries.getKeyAtIndex(0).until(date, ChronoUnit.DAYS) }.toList()
+    val yData = timeSeries.getEntries().map { (_, value) -> value }.toList()
+    val series = chart.addSeries("Data", xData, yData)
+    series.marker = SeriesMarkers.NONE
 
-    // Display the chart in a Swing frame
     SwingWrapper(chart).displayChart()
 }
 
@@ -40,7 +50,7 @@ fun main() {
     val size = 150
     val ts = ImmutableLocalDateDoubleTimeSeries.of(
         List(size) { index -> LocalDate.of(2023, 1, 1).plusDays(index.toLong()) },
-        List(size) { _ -> random.nextDouble() }
+        List(size) { _ -> random.nextDouble() - 0.5 }
     )
     timeSeriesLinePlot(ts)
 }

@@ -14,7 +14,7 @@ class ImmutableLocalDateTimeSeriesTest {
     fun testEmptySeries() {
         val series = ImmutableLocalDateTimeSeries.empty<String>()
         assertTrue(series.isEmpty())
-        assertEquals(0, series.entries.size)
+        assertEquals(0, series.getSize())
     }
 
     @Test
@@ -22,7 +22,7 @@ class ImmutableLocalDateTimeSeriesTest {
         val map = keys.zip(values).toMap().toSortedMap()
         val series = ImmutableLocalDateTimeSeries.fromMap(map)
         assertFalse(series.isEmpty())
-        assertEquals(10, series.entries.size)
+        assertEquals(10, series.getSize())
         assertEquals(startDate, series.getKeyAtIndex(0))
         assertEquals(0, series.getValueAtIndex(0))
         assertEquals(endDate, series.getKeyAtIndex(9))
@@ -33,7 +33,7 @@ class ImmutableLocalDateTimeSeriesTest {
     fun testCreatingSeriesFromLists() {
         val series = ImmutableLocalDateTimeSeries.of(keys, values)
         assertFalse(series.isEmpty())
-        assertEquals(10, series.entries.size)
+        assertEquals(10, series.getSize())
         assertEquals(startDate, series.getKeyAtIndex(0))
         assertEquals(0, series.getValueAtIndex(0))
         assertEquals(endDate, series.getKeyAtIndex(9))
@@ -44,7 +44,7 @@ class ImmutableLocalDateTimeSeriesTest {
     fun testSubSeriesWithInclusiveStartAndExclusiveEnd1() {
         val series = ImmutableLocalDateTimeSeries.of(keys, values)
         val subSeries = series.subSeries(startDate.plusDays(2), endDate.minusDays(2))
-        assertEquals(5, subSeries.entries.size)
+        assertEquals(5, subSeries.getSize())
         assertEquals(startDate.plusDays(2), subSeries.getKeyAtIndex(0))
         assertEquals(2, subSeries.getValueAtIndex(0))
         assertEquals(endDate.minusDays(3), subSeries.getKeyAtIndex(4))
@@ -55,7 +55,7 @@ class ImmutableLocalDateTimeSeriesTest {
     fun testSubSeriesWithInclusiveStartAndExclusiveEnd() {
         val series = ImmutableLocalDateTimeSeries.of(keys, values)
         val subSeries = series.subSeries(startDate.plusDays(2), true, endDate.minusDays(2), false)
-        assertEquals(5, subSeries.entries.size)
+        assertEquals(5, subSeries.getSize())
         assertEquals(startDate.plusDays(2), subSeries.getKeyAtIndex(0))
         assertEquals(2, subSeries.getValueAtIndex(0))
         assertEquals(endDate.minusDays(3), subSeries.getKeyAtIndex(4))
@@ -66,7 +66,7 @@ class ImmutableLocalDateTimeSeriesTest {
     fun testSubSeriesWithInclusiveStartAndInclusiveEnd() {
         val series = ImmutableLocalDateTimeSeries.of(keys, values)
         val subSeries = series.subSeries(startDate.plusDays(2), true, endDate.minusDays(2), true)
-        assertEquals(6, subSeries.entries.size)
+        assertEquals(6, subSeries.getSize())
         assertEquals(startDate.plusDays(2), subSeries.getKeyAtIndex(0))
         assertEquals(2, subSeries.getValueAtIndex(0))
         assertEquals(endDate.minusDays(2), subSeries.getKeyAtIndex(5))
@@ -77,7 +77,7 @@ class ImmutableLocalDateTimeSeriesTest {
     fun testSubSeriesWithExclusiveStartAndInclusiveEnd() {
         val series = ImmutableLocalDateTimeSeries.of(keys, values)
         val subSeries = series.subSeries(startDate.plusDays(2), false, endDate.minusDays(2), true)
-        assertEquals(5, subSeries.entries.size)
+        assertEquals(5, subSeries.getSize())
         assertEquals(startDate.plusDays(3), subSeries.getKeyAtIndex(0))
         assertEquals(3, subSeries.getValueAtIndex(0))
         assertEquals(endDate.minusDays(2), subSeries.getKeyAtIndex(4))
@@ -88,7 +88,7 @@ class ImmutableLocalDateTimeSeriesTest {
     fun testSubSeriesWithExclusiveStartAndExclusiveEnd() {
         val series = ImmutableLocalDateTimeSeries.of(keys, values)
         val subSeries = series.subSeries(startDate.plusDays(2), false, endDate.minusDays(2), false)
-        assertEquals(4, subSeries.entries.size)
+        assertEquals(4, subSeries.getSize())
         assertEquals(startDate.plusDays(3), subSeries.getKeyAtIndex(0))
         assertEquals(3, subSeries.getValueAtIndex(0))
         assertEquals(endDate.minusDays(3), subSeries.getKeyAtIndex(3))
@@ -99,7 +99,7 @@ class ImmutableLocalDateTimeSeriesTest {
     fun testHeadWithNumberOfItems() {
         val series = ImmutableLocalDateTimeSeries.of(keys, values)
         val headSeries = series.head(3)
-        assertEquals(3, headSeries.entries.size)
+        assertEquals(3, headSeries.getSize())
         assertEquals(startDate, headSeries.getKeyAtIndex(0))
         assertEquals(0, headSeries.getValueAtIndex(0))
         assertEquals(startDate.plusDays(2), headSeries.getKeyAtIndex(2))
@@ -110,7 +110,7 @@ class ImmutableLocalDateTimeSeriesTest {
     fun testHeadWithEndTime() {
         val series = ImmutableLocalDateTimeSeries.of(keys, values)
         val headSeries = series.head(startDate.plusDays(5))
-        assertEquals(5, headSeries.entries.size)
+        assertEquals(5, headSeries.getSize())
         assertEquals(startDate, headSeries.getKeyAtIndex(0))
         assertEquals(0, headSeries.getValueAtIndex(0))
         assertEquals(startDate.plusDays(4), headSeries.getKeyAtIndex(4))
@@ -121,7 +121,7 @@ class ImmutableLocalDateTimeSeriesTest {
     fun testTailWithNumberOfItems() {
         val series = ImmutableLocalDateTimeSeries.of(keys, values)
         val tailSeries = series.tail(3)
-        assertEquals(3, tailSeries.entries.size)
+        assertEquals(3, tailSeries.getSize())
         assertEquals(endDate.minusDays(2), tailSeries.getKeyAtIndex(0))
         assertEquals(7, tailSeries.getValueAtIndex(0))
         assertEquals(endDate, tailSeries.getKeyAtIndex(2))
@@ -132,7 +132,7 @@ class ImmutableLocalDateTimeSeriesTest {
     fun testTailWithStartTime() {
         val series = ImmutableLocalDateTimeSeries.of(keys, values)
         val tailSeries = series.tail(startDate.plusDays(6))
-        assertEquals(4, tailSeries.entries.size)
+        assertEquals(4, tailSeries.getSize())
         assertEquals(startDate.plusDays(6), tailSeries.getKeyAtIndex(0))
         assertEquals(6, tailSeries.getValueAtIndex(0))
         assertEquals(endDate, tailSeries.getKeyAtIndex(3))

@@ -21,7 +21,7 @@ class ImmutableLocalDateTimeSeriesFunctionalTest {
 
         val filteredTimeSeries = timeSeries.filter { entry -> entry.value > 25.0 }
 
-        assertEquals(3, filteredTimeSeries.size)
+        assertEquals(3, filteredTimeSeries.getSize())
         assertTrue(filteredTimeSeries.contains(LocalDate.of(2023, 1, 3)))
         assertTrue(filteredTimeSeries.contains(LocalDate.of(2023, 1, 4)))
         assertTrue(filteredTimeSeries.contains(LocalDate.of(2023, 1, 5)))

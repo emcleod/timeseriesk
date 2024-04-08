@@ -1,6 +1,6 @@
 package org.emcleod.timeseries
 
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
@@ -141,7 +141,7 @@ class ImmutableLocalDateTimeSeriesOperatorTest {
 
         val result = series1 + series2
 
-        assertEquals(2, result.entries.size)
+        assertEquals(2, result.getSize())
         assertEquals(15.0, result[LocalDate.of(2023, 1, 1)])
         assertEquals(35.0, result[LocalDate.of(2023, 1, 2)])
     }
@@ -163,7 +163,7 @@ class ImmutableLocalDateTimeSeriesOperatorTest {
 
         val result = series1 + series2
 
-        assertEquals(3, result.size)
+        assertEquals(3, result.getSize())
         assertEquals(10.0, result[LocalDate.of(2023, 1, 1)])
         assertEquals(35.0, result[LocalDate.of(2023, 1, 2)])
         assertEquals(30.0, result[LocalDate.of(2023, 1, 3)])
@@ -222,7 +222,7 @@ class ImmutableLocalDateTimeSeriesOperatorTest {
 
         val result = series1 - series2
 
-        assertEquals(2, result.size)
+        assertEquals(2, result.getSize())
         assertEquals(5.0, result[LocalDate.of(2023, 1, 1)])
         assertEquals(5.0, result[LocalDate.of(2023, 1, 2)])
     }
@@ -244,7 +244,7 @@ class ImmutableLocalDateTimeSeriesOperatorTest {
 
         val result = series1 - series2
 
-        assertEquals(3, result.size)
+        assertEquals(3, result.getSize())
         assertEquals(10.0, result[LocalDate.of(2023, 1, 1)])
         assertEquals(5.0, result[LocalDate.of(2023, 1, 2)])
         assertEquals(-30.0, result[LocalDate.of(2023, 1, 3)])

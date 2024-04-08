@@ -44,7 +44,7 @@ class DateTimeSeriesEqualsTest {
     }
 
     // Mock implementation of AbstractDateTimeSeries
-    class MockDateTimeSeries<T : Comparable<T>, out V>(times: List<T>, values: List<V>) :
+    class MockDateTimeSeries<T : Comparable<T>, V>(times: List<T>, values: List<V>) :
         AbstractDateTimeSeries<T, V>(times, values) {
 
         override fun subSeries(startTimeInclusive: T, endTimeExclusive: T): TimeSeries<T, V> {

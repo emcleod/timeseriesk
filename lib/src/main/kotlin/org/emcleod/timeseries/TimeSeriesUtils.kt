@@ -4,9 +4,9 @@ import java.time.LocalDate
 
 fun ImmutableLocalDateDoubleTimeSeries.lag(lag: Int): ImmutableLocalDateDoubleTimeSeries {
     val shiftedData = sortedMapOf<LocalDate, Double>()
-    for (i in 0 until size) {
+    for (i in 0 until getSize()) {
         val shiftedIndex = i + lag
-        if (shiftedIndex in 0 until size) {
+        if (shiftedIndex in 0 until getSize()) {
             shiftedData[getKeyAtIndex(i)] = getValueAtIndex(shiftedIndex)
         }
     }

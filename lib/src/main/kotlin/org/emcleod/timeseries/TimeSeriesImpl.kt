@@ -1,9 +1,8 @@
 package org.emcleod.timeseries
 
 import java.time.LocalDate
-import java.util.SortedMap
 
-open class ImmutableLocalDateTimeSeries<out V> protected constructor(times: List<LocalDate>, values: List<V>) :
+open class ImmutableLocalDateTimeSeries<V> protected constructor(times: List<LocalDate>, values: List<V>) :
     AbstractDateTimeSeries<LocalDate, V>(times, values) {
 
     companion object {
@@ -21,65 +20,65 @@ open class ImmutableLocalDateTimeSeries<out V> protected constructor(times: List
     }
     
     override fun subSeries(startTimeInclusive: LocalDate, endTimeExclusive: LocalDate): ImmutableLocalDateTimeSeries<V> {
-        return ImmutableLocalDateTimeSeries.fromMap(subMap(startTimeInclusive, endTimeExclusive))
+        return fromMap(subMap(startTimeInclusive, endTimeExclusive))
     }
 
     override fun subSeries(startTime: LocalDate, includeStart: Boolean, endTime: LocalDate, includeEnd: Boolean): ImmutableLocalDateTimeSeries<V> {
-        val subMap = entries.toList()
+        val subMap = getEntries().toList()
             .dropWhile { (key, _) ->
                 if (includeStart) key.isBefore(startTime) else !key.isAfter(startTime) }
             .takeWhile { (key, _) ->
                 if (includeEnd) !key.isAfter(endTime) else key.isBefore(endTime) }
             .toMap()
-        return ImmutableLocalDateTimeSeries.fromMap(subMap)
+        return fromMap(subMap)
     }
 
     override fun tail(numItems: Int): ImmutableLocalDateTimeSeries<V> {
-        return ImmutableLocalDateTimeSeries.fromMap(tailMap(numItems))
+        return fromMap(tailMap(numItems))
     }
 
     override fun tail(startTimeInclusive: LocalDate): ImmutableLocalDateTimeSeries<V> {
-        val subMap = entries.toList().dropWhile { it.first.isBefore(startTimeInclusive) }.toMap()
-        return ImmutableLocalDateTimeSeries.fromMap(subMap)
+        val subMap = getEntries().toList().dropWhile { it.first.isBefore(startTimeInclusive) }.toMap()
+        return fromMap(subMap)
     }
 
     override fun head(numItems: Int): ImmutableLocalDateTimeSeries<V> {
-        return ImmutableLocalDateTimeSeries.fromMap(headMap(numItems))
+        return fromMap(headMap(numItems))
     }
     
     override fun head(endTimeExclusive: LocalDate): ImmutableLocalDateTimeSeries<V> {
-        val subMap = entries.toList().takeWhile { it.first.isBefore(endTimeExclusive) }.toMap()
-        return ImmutableLocalDateTimeSeries.fromMap(subMap)
+        val subMap = getEntries().toList().takeWhile { it.first.isBefore(endTimeExclusive) }.toMap()
+        return fromMap(subMap)
     }
     
     inline fun filter(predicate: (Map.Entry<LocalDate, V>) -> Boolean): ImmutableLocalDateTimeSeries<V> {
-        val filtered = entries.filter { entry -> predicate(entry) }.toMap()
-        return ImmutableLocalDateTimeSeries.fromMap(filtered)
+        val filtered = getEntries().filter { entry -> predicate(entry) }.toMap()
+        return fromMap(filtered)
     }
 
     inline fun <R> map(transform: (Map.Entry<LocalDate, V>) -> R): ImmutableLocalDateTimeSeries<R> {
-        val mapped = entries.map { entry -> entry.key to transform(entry) }.toMap().toSortedMap()
-        return ImmutableLocalDateTimeSeries.fromMap(mapped)
+        val mapped = getEntries().map { entry -> entry.key to transform(entry) }.toMap().toSortedMap()
+        return fromMap(mapped)
     }
 
     inline fun <R> fold(initial: R, operation: (acc: R, value: V) -> R): R {
-        return entries.values.fold(initial) { acc, value -> operation(acc, value) }
+        return getEntries().values.fold(initial) { acc, value -> operation(acc, value) }
     }
 
     inline fun <R> reduce(initial: R, operation: (acc: R, value: V) -> R): R {
-        return entries.values.fold(initial) { acc, value -> operation(acc, value) }
+        return getEntries().values.fold(initial) { acc, value -> operation(acc, value) }
     }
 
     inline fun forEach(action: (LocalDate, V) -> Unit) {
-        entries.forEach { (date, value) -> action(date, value) }
+        getEntries().forEach { (date, value) -> action(date, value) }
     }
 
     inline fun any(predicate: (Map.Entry<LocalDate, V>) -> Boolean): Boolean {
-        return entries.any { entry -> predicate(entry) }
+        return getEntries().any { entry -> predicate(entry) }
     }
 
     inline fun all(predicate: (Map.Entry<LocalDate, V>) -> Boolean): Boolean {
-        return entries.all { entry -> predicate(entry) }
+        return getEntries().all { entry -> predicate(entry) }
     }    
 }
 
@@ -101,30 +100,30 @@ public class ImmutableLocalDateDoubleTimeSeries private constructor(times: List<
     }
 
     operator fun plus(a: Number) = 
-        ImmutableLocalDateDoubleTimeSeries.fromMap(entries.map { (times, value) -> times to value + a.toDouble() }.toMap())
+        fromMap(getEntries().map { (times, value) -> times to value + a.toDouble() }.toMap())
     operator fun <S : Number> plus(other: ImmutableLocalDateTimeSeries<S>): ImmutableLocalDateTimeSeries<Double> {
-        val dates = (entries.keys + other.entries.keys).sorted()
+        val dates = (getEntries().keys + other.getEntries().keys).sorted()
         val values = dates.map { date ->
-            (entries[date]?.toDouble() ?: 0.0) + (other.entries[date]?.toDouble() ?: 0.0)
+            (getEntries()[date] ?: 0.0) + (other.getEntries()[date]?.toDouble() ?: 0.0)
         }
-        return ImmutableLocalDateDoubleTimeSeries.fromMap(dates.zip(values).toMap())
+        return fromMap(dates.zip(values).toMap())
     }
     operator fun minus(a: Number) = 
-        ImmutableLocalDateDoubleTimeSeries.fromMap(entries.map { (times, value) -> times to value - a.toDouble() }.toMap())
+        fromMap(getEntries().map { (times, value) -> times to value - a.toDouble() }.toMap())
     operator fun <S : Number> minus(other: ImmutableLocalDateTimeSeries<S>): ImmutableLocalDateTimeSeries<Double> {
-        val dates = (entries.keys + other.entries.keys).sorted()
+        val dates = (getEntries().keys + other.getEntries().keys).sorted()
         val values = dates.map { date ->
-            (entries[date]?.toDouble() ?: 0.0) - (other.entries[date]?.toDouble() ?: 0.0)
+            (getEntries()[date] ?: 0.0) - (other.getEntries()[date]?.toDouble() ?: 0.0)
         }
-        return ImmutableLocalDateDoubleTimeSeries.fromMap(dates.zip(values).toMap())
+        return fromMap(dates.zip(values).toMap())
     }
     operator fun times(a: Number) = 
-        ImmutableLocalDateDoubleTimeSeries.fromMap(entries.map { (times, value) -> times to value * a.toDouble() }.toMap())
+        fromMap(getEntries().map { (times, value) -> times to value * a.toDouble() }.toMap())
     operator fun div(a: Number): ImmutableLocalDateTimeSeries<Double> {
         if (a == 0) {
             throw IllegalArgumentException("Cannot divide time series by zero")
         }
-        return ImmutableLocalDateDoubleTimeSeries.fromMap(entries.map { (times, value) -> times to value / a.toDouble() }.toMap())
+        return fromMap(getEntries().map { (times, value) -> times to value / a.toDouble() }.toMap())
     }
 
 }
@@ -163,11 +162,11 @@ class ImmutableLocalDateIntTimeSeries private constructor(times: List<LocalDate>
     }
 
     operator fun plus(a: Int) = 
-        ImmutableLocalDateIntTimeSeries.fromMap(entries.map { (times, value) -> times to value + a }.toMap())
+        ImmutableLocalDateIntTimeSeries.fromMap(getEntries().map { (times, value) -> times to value + a }.toMap())
     operator fun plus(a: Long) = 
-        ImmutableLocalDateLongTimeSeries.fromMap(entries.map { (times, value) -> times to value + a }.toMap())
+        ImmutableLocalDateLongTimeSeries.fromMap(getEntries().map { (times, value) -> times to value + a }.toMap())
     operator fun plus(a: Double) = 
-        ImmutableLocalDateDoubleTimeSeries.fromMap(entries.map { (times, value) -> times to value + a }.toMap())
+        ImmutableLocalDateDoubleTimeSeries.fromMap(getEntries().map { (times, value) -> times to value + a }.toMap())
 }
 
 class ImmutableLocalDateLongTimeSeries private constructor(times: List<LocalDate>, values: List<Long>) :
@@ -188,11 +187,11 @@ class ImmutableLocalDateLongTimeSeries private constructor(times: List<LocalDate
     }
 
     operator fun plus(a: Int) = 
-        ImmutableLocalDateLongTimeSeries.fromMap(entries.map { (times, value) -> times to value + a }.toMap())
+        ImmutableLocalDateLongTimeSeries.fromMap(getEntries().map { (times, value) -> times to value + a }.toMap())
     operator fun plus(a: Long) = 
-        ImmutableLocalDateLongTimeSeries.fromMap(entries.map { (times, value) -> times to value + a }.toMap())
+        ImmutableLocalDateLongTimeSeries.fromMap(getEntries().map { (times, value) -> times to value + a }.toMap())
     operator fun plus(a: Double) = 
-        ImmutableLocalDateDoubleTimeSeries.fromMap(entries.map { (times, value) -> times to value + a }.toMap())
+        ImmutableLocalDateDoubleTimeSeries.fromMap(getEntries().map { (times, value) -> times to value + a }.toMap())
 
 }
 
