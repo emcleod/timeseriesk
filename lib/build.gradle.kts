@@ -17,7 +17,6 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
-    maven("https://packages.jetbrains.team/maven/p/kds/kotlin-ds-maven")
 }
 
 dependencies {
@@ -30,8 +29,8 @@ dependencies {
     testImplementation(kotlin("test-junit"))
     testImplementation(sourceSets.main.get().output)
     api("org.apache.commons:commons-math3:3.6.1")
-    implementation("org.jetbrains.kotlinx:kandy-lets-plot:0.6.0")
-    implementation("org.jetbrains.kotlinx:kotlin-statistics-jvm:0.2.1")
+    implementation(kotlin("stdlib-jdk8"))
+    implementation("org.knowm.xchart:xchart:3.8.7")
 }
 
 kotlin {
