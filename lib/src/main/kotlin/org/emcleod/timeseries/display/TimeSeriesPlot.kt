@@ -4,9 +4,11 @@ import org.emcleod.timeseries.LocalDateDoubleTimeSeries
 import org.knowm.xchart.SwingWrapper
 import org.knowm.xchart.XYChartBuilder
 import org.knowm.xchart.XYSeries
+import org.knowm.xchart.style.markers.SeriesMarkers
 import java.awt.Color
 import java.awt.Font
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 import kotlin.random.Random
 
 fun timeSeriesLinePlot(timeSeries: LocalDateDoubleTimeSeries) {
@@ -34,11 +36,11 @@ fun timeSeriesLinePlot(timeSeries: LocalDateDoubleTimeSeries) {
         setChartBackgroundColor(Color.WHITE)
     }
 
-//    val xData = timeSeries.map { (date, _) -> timeSeries.getKeyAtIndex(0).until(date, ChronoUnit.DAYS) }.toList()
-//    val yData = timeSeries.map { (_, value) -> value }.toList()
-//    val series = chart.addSeries("Data", xData, yData)
-//    series.marker = SeriesMarkers.NONE
-
+    val (xData, yData) = timeSeries.getEntries().map { (date, value) ->
+        Pair(date.until(timeSeries.getKeyAtIndex(0), ChronoUnit.DAYS).toDouble(), value)
+    }.unzip()
+    val series = chart.addSeries("Data", xData, yData)
+    series.marker = SeriesMarkers.NONE
     SwingWrapper(chart).displayChart()
 }
 
