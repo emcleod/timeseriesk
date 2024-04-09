@@ -2,13 +2,13 @@ package org.emcleod.timeseries.display
 
 import org.emcleod.timeseries.LocalDateDoubleTimeSeries
 import org.emcleod.timeseries.analysis.generateAutocorrelations
+import org.emcleod.timeseries.sample.generateMASeries
 import org.knowm.xchart.CategoryChart
 import org.knowm.xchart.CategoryChartBuilder
 import org.knowm.xchart.SwingWrapper
 import org.knowm.xchart.XYChartBuilder
 import java.awt.Font
 import java.time.LocalDate
-import kotlin.random.Random
 
 fun autocorrelationLinePlot(data: List<Pair<Int, Double>>) {
     val chart = XYChartBuilder()
@@ -41,13 +41,11 @@ fun autocorrelationBarChartPlot(data: List<Pair<Int, Double>>) {
 }
 
 fun main() {
-    val seed = 123
-    val random = Random(seed)
     val size = 150
-    val ts = LocalDateDoubleTimeSeries.of(
-        List(size) { index -> LocalDate.of(2023, 1, 1).plusDays(index.toLong()) },
-        List(size) { _ -> random.nextDouble() }
-    )
-    val autocorrelations = generateAutocorrelations(ts, size / 10)
+    val startDate = LocalDate.of(2024, 1, 1)
+    val data = generateMASeries(size, listOf(0.5, -0.3, 0.2, 0.6))
+    val ts = LocalDateDoubleTimeSeries.fromMap(
+        data.associate { (key, value) -> startDate.plusDays(key.toLong()) to value })
+    val autocorrelations = generateAutocorrelations(ts, 100)
     autocorrelationBarChartPlot(autocorrelations)
 }

@@ -1,14 +1,15 @@
 package org.emcleod.timeseries.analysis
 
 import org.emcleod.timeseries.LocalDateDoubleTimeSeries
-import java.time.LocalDate
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
+import java.time.LocalDate
 import kotlin.math.abs
 import kotlin.random.Random
 
 class AutocorrelationTest {
-    
+
     @Test
     fun testAutocorrelationWithLag0() {
         val timeSeries = LocalDateDoubleTimeSeries.fromMap(
@@ -51,7 +52,6 @@ class AutocorrelationTest {
             )
         )
         val autocorrelation = autocorrelation(timeSeries, -1)
-        // Adjust the expected value based on your lag implementation
         assertEquals(0.9, autocorrelation, 0.1)
     }
 

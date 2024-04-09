@@ -66,3 +66,9 @@ fun CategoryChart.addSeries(seriesName: String, data: List<Pair<Int, Double>>): 
     val (xData, yData) = data.unzip()
     return addSeries(seriesName, xData, yData)
 }
+
+fun accumulatePairs(start: Double, pairs: List<Pair<Int, Double>>): List<Pair<Int, Double>> {
+    return pairs.runningFold(Pair(0, start)) { acc, pair ->
+        Pair(pair.first, acc.second + pair.second)
+    }.drop(1)
+}
