@@ -123,6 +123,41 @@ open class LocalDateTimeSeries<V : Number> protected constructor(times: List<Loc
     }
 
     /**
+     * A builder class for creating immutable instances of this class.
+     *
+     * @param V the type of values in the map, which must be a subtype of [Number]
+     */
+    abstract class Builder<V : Number, T : LocalDateTimeSeries<V>> {
+        private val map = sortedMapOf<LocalDate, V>()
+
+        protected fun getMap() = map
+
+        /**
+         * Adds a single key-value pair to the builder's map.
+         *
+         * @param date the key of type [LocalDate]
+         * @param value the value of type [V]
+         * @return the [Builder] instance for method chaining
+         */
+        fun put(date: LocalDate, value: V) = apply { map[date] = value }
+
+        /**
+         * Adds all key-value pairs from the specified [map] to the builder's map.
+         *
+         * @param map the map containing the key-value pairs to be added
+         * @return the [Builder] instance for method chaining
+         */
+        fun putAll(map: Map<LocalDate, V>) = apply { this.map.putAll(map) }
+
+        /**
+         * Creates an immutable instance of the timeseries.
+         *
+         * @return the created instance
+         */
+        abstract fun build(): T
+    }
+
+    /**
      * Creates a LocalDateTimeSeries from a map of LocalDate keys and values.
      *
      * @param entries the map of LocalDate keys and values
@@ -197,6 +232,13 @@ class LocalDateDoubleTimeSeries private constructor(times: List<LocalDate>, valu
         fun of(keys: List<LocalDate>, values: List<Double>): LocalDateDoubleTimeSeries {
             return LocalDateDoubleTimeSeries(keys, values)
         }
+    }
+
+    /**
+     * A builder class for creating immutable instances of this class.
+     */
+    class Builder : LocalDateTimeSeries.Builder<Double, LocalDateDoubleTimeSeries>() {
+        override fun build() = fromMap(getMap())
     }
 
     /**
@@ -279,6 +321,13 @@ class LocalDateIntTimeSeries private constructor(times: List<LocalDate>, values:
     }
 
     /**
+     * A builder class for creating immutable instances of this class.
+     */
+    class Builder : LocalDateTimeSeries.Builder<Int, LocalDateIntTimeSeries>() {
+        override fun build() = fromMap(getMap())
+    }
+
+    /**
      * Creates a LocalDateIntTimeSeries from a map of LocalDate keys and Int values.
      *
      * @param entries the map of LocalDate keys and Int values
@@ -358,6 +407,13 @@ class LocalDateLongTimeSeries private constructor(times: List<LocalDate>, values
     }
 
     /**
+     * A builder class for creating immutable instances of this class.
+     */
+    class Builder : LocalDateTimeSeries.Builder<Long, LocalDateLongTimeSeries>() {
+        override fun build() = fromMap(getMap())
+    }
+
+    /**
      * Creates a LocalDateLongTimeSeries from a map of LocalDate keys and Long values.
      *
      * @param entries the map of LocalDate keys and Long values
@@ -366,7 +422,7 @@ class LocalDateLongTimeSeries private constructor(times: List<LocalDate>, values
     override fun fromMap(entries: Map<LocalDate, Long>): LocalDateLongTimeSeries {
         return LocalDateLongTimeSeries.fromMap(entries)
     }
-    
+
     private val _transform: (Number?) -> Long = { it?.toLong() ?: 0L }
 
     override operator fun plus(a: Number): LocalDateTimeSeries<Long> = map { (_, value) -> value + a.toLong() }
