@@ -1,6 +1,6 @@
 package org.emcleod.timeseries.analysis
 
-import org.emcleod.timeseries.ImmutableLocalDateDoubleTimeSeries
+import org.emcleod.timeseries.LocalDateDoubleTimeSeries
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
@@ -9,14 +9,14 @@ class PearsonCorrelationTest {
     
     @Test
     fun testPerfectPositiveCorrelation() {
-        val ts1 = ImmutableLocalDateDoubleTimeSeries.of(
+        val ts1 = LocalDateDoubleTimeSeries.of(
             listOf(LocalDate.of(2024, 1, 1), 
                 LocalDate.of(2024, 1, 2), 
                 LocalDate.of(2024, 1, 3), 
                 LocalDate.of(2024, 1, 4),
                 LocalDate.of(2024, 1, 5)),
             listOf(1.0, 2.0, 3.0, 4.0, 5.0))
-            val ts2 = ImmutableLocalDateDoubleTimeSeries.of(
+            val ts2 = LocalDateDoubleTimeSeries.of(
                 listOf(LocalDate.of(2024, 1, 1), 
                     LocalDate.of(2024, 1, 2), 
                     LocalDate.of(2024, 1, 3), 
@@ -29,14 +29,14 @@ class PearsonCorrelationTest {
 
     @Test
     fun testPerfectNegativeCorrelation() {
-        val ts1 = ImmutableLocalDateDoubleTimeSeries.of(
+        val ts1 = LocalDateDoubleTimeSeries.of(
             listOf(LocalDate.of(2024, 1, 1), 
                 LocalDate.of(2024, 1, 2), 
                 LocalDate.of(2024, 1, 3), 
                 LocalDate.of(2024, 1, 4),
                 LocalDate.of(2024, 1, 5)),
             listOf(1.0, 2.0, 3.0, 4.0, 5.0))
-        val ts2 = ImmutableLocalDateDoubleTimeSeries.of(
+        val ts2 = LocalDateDoubleTimeSeries.of(
             listOf(LocalDate.of(2024, 1, 1), 
                 LocalDate.of(2024, 1, 2), 
                 LocalDate.of(2024, 1, 3), 
@@ -49,14 +49,14 @@ class PearsonCorrelationTest {
 
     @Test
     fun testNoCorrelation() {
-        val ts1 = ImmutableLocalDateDoubleTimeSeries.of(
+        val ts1 = LocalDateDoubleTimeSeries.of(
             listOf(LocalDate.of(2024, 1, 1), 
                 LocalDate.of(2024, 1, 2), 
                 LocalDate.of(2024, 1, 3), 
                 LocalDate.of(2024, 1, 4),
                 LocalDate.of(2024, 1, 5)),
             listOf(1.0, 2.0, 3.0, 4.0, 5.0))
-        val ts2 = ImmutableLocalDateDoubleTimeSeries.of(
+        val ts2 = LocalDateDoubleTimeSeries.of(
             listOf(LocalDate.of(2024, 1, 1), 
                 LocalDate.of(2024, 1, 2), 
                 LocalDate.of(2024, 1, 3), 
@@ -69,14 +69,14 @@ class PearsonCorrelationTest {
 
     @Test
     fun testArraysOfDifferentLengths() {
-        val ts1 = ImmutableLocalDateDoubleTimeSeries.of(
+        val ts1 = LocalDateDoubleTimeSeries.of(
             listOf(LocalDate.of(2024, 1, 1), 
                 LocalDate.of(2024, 1, 2), 
                 LocalDate.of(2024, 1, 3), 
                 LocalDate.of(2024, 1, 4),
                 LocalDate.of(2024, 1, 5)),
             listOf(1.0, 2.0, 3.0, 4.0, 5.0))
-        val ts2 = ImmutableLocalDateDoubleTimeSeries.of(
+        val ts2 = LocalDateDoubleTimeSeries.of(
             listOf(LocalDate.of(2024, 1, 1), 
                 LocalDate.of(2024, 1, 2), 
                 LocalDate.of(2024, 1, 3), 
@@ -89,7 +89,7 @@ class PearsonCorrelationTest {
 
     @Test
     fun testCorrelationWithEmptySeries() {
-        val ts = ImmutableLocalDateDoubleTimeSeries.empty()
+        val ts = LocalDateDoubleTimeSeries.empty()
         assertThrows(IllegalArgumentException::class.java) {
             pearsonCorrelation(ts, ts)
         }
@@ -97,10 +97,10 @@ class PearsonCorrelationTest {
 
     @Test
     fun testCorrelationWithInsufficientData() {
-        val ts1 = ImmutableLocalDateDoubleTimeSeries.of(
+        val ts1 = LocalDateDoubleTimeSeries.of(
             listOf(LocalDate.of(2023, 1, 1)), listOf(0.0)
         )
-        val ts2 = ImmutableLocalDateDoubleTimeSeries.of(
+        val ts2 = LocalDateDoubleTimeSeries.of(
             listOf(LocalDate.of(2023, 1, 1)), listOf(0.1)
         )
         assertThrows(IllegalArgumentException::class.java) {

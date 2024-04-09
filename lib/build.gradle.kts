@@ -31,6 +31,10 @@ dependencies {
     api("org.apache.commons:commons-math3:3.6.1")
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.knowm.xchart:xchart:3.8.7")
+    testImplementation("org.mockito:mockito-core:4.0.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:4.0.0")
+    testImplementation("org.mockito:mockito-inline:4.0.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
 }
 
 kotlin {
@@ -56,7 +60,7 @@ tasks.test {
     }
     testLogging.showStandardStreams = true
     useJUnitPlatform()
-    finalizedBy(tasks.jacocoTestReport) 
+    finalizedBy(tasks.jacocoTestReport)
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -66,7 +70,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 }
 
 tasks.jacocoTestReport {
-    dependsOn(tasks.test) 
+    dependsOn(tasks.test)
     reports {
         xml.required.set(false)
         csv.required.set(false)
@@ -78,7 +82,7 @@ tasks.jacocoTestCoverageVerification {
     violationRules {
         rule {
             limit {
-                minimum = "0.1".toBigDecimal() 
+                minimum = "0.1".toBigDecimal()
             }
         }
     }

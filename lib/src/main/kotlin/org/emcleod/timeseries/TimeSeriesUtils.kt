@@ -2,7 +2,7 @@ package org.emcleod.timeseries
 
 import java.time.LocalDate
 
-fun ImmutableLocalDateDoubleTimeSeries.lag(lag: Int): ImmutableLocalDateDoubleTimeSeries {
+fun LocalDateDoubleTimeSeries.lag(lag: Int): LocalDateDoubleTimeSeries {
     val shiftedData = sortedMapOf<LocalDate, Double>()
     for (i in 0 until getSize()) {
         val shiftedIndex = i + lag
@@ -10,10 +10,10 @@ fun ImmutableLocalDateDoubleTimeSeries.lag(lag: Int): ImmutableLocalDateDoubleTi
             shiftedData[getKeyAtIndex(i)] = getValueAtIndex(shiftedIndex)
         }
     }
-    return ImmutableLocalDateDoubleTimeSeries.fromMap(shiftedData)
+    return LocalDateDoubleTimeSeries.fromMap(shiftedData)
 }
 
-fun ImmutableLocalDateDoubleTimeSeries.intersect(other: ImmutableLocalDateDoubleTimeSeries): ImmutableLocalDateDoubleTimeSeries {
+fun LocalDateDoubleTimeSeries.intersect(other: LocalDateDoubleTimeSeries): LocalDateDoubleTimeSeries {
     val times = mutableListOf<LocalDate>()
     val values = mutableListOf<Double>()
     other.forEach { date, _ -> 
@@ -22,5 +22,5 @@ fun ImmutableLocalDateDoubleTimeSeries.intersect(other: ImmutableLocalDateDouble
             values.add(this.get(date)!!) 
         }
     }
-    return ImmutableLocalDateDoubleTimeSeries.of(times, values)
+    return LocalDateDoubleTimeSeries.of(times, values)
 }

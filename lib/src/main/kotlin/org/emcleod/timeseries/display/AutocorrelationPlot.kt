@@ -1,6 +1,6 @@
 package org.emcleod.timeseries.display
 
-import org.emcleod.timeseries.ImmutableLocalDateDoubleTimeSeries
+import org.emcleod.timeseries.LocalDateDoubleTimeSeries
 import org.emcleod.timeseries.analysis.generateAutocorrelations
 import org.knowm.xchart.SwingWrapper
 import org.knowm.xchart.XYChartBuilder
@@ -37,7 +37,7 @@ fun main() {
     val seed = 123
     val random = Random(seed)
     val size = 150
-    val ts = ImmutableLocalDateDoubleTimeSeries.of(
+    val ts = LocalDateDoubleTimeSeries.of(
         List(size) { index -> LocalDate.of(2023, 1, 1).plusDays(index.toLong()) },
         List(size) { _ -> random.nextDouble() }
     )

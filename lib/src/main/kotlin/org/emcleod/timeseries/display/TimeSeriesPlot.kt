@@ -1,17 +1,15 @@
 package org.emcleod.timeseries.display
 
-import org.emcleod.timeseries.ImmutableLocalDateDoubleTimeSeries
+import org.emcleod.timeseries.LocalDateDoubleTimeSeries
 import org.knowm.xchart.SwingWrapper
 import org.knowm.xchart.XYChartBuilder
 import org.knowm.xchart.XYSeries
-import org.knowm.xchart.style.markers.SeriesMarkers
 import java.awt.Color
 import java.awt.Font
 import java.time.LocalDate
-import java.time.temporal.ChronoUnit
 import kotlin.random.Random
 
-fun timeSeriesLinePlot(timeSeries: ImmutableLocalDateDoubleTimeSeries) {
+fun timeSeriesLinePlot(timeSeries: LocalDateDoubleTimeSeries) {
     val chart = XYChartBuilder()
         .width(800)
         .height(600)
@@ -36,10 +34,10 @@ fun timeSeriesLinePlot(timeSeries: ImmutableLocalDateDoubleTimeSeries) {
         setChartBackgroundColor(Color.WHITE)
     }
 
-    val xData = timeSeries.getEntries().map { (date, _) -> timeSeries.getKeyAtIndex(0).until(date, ChronoUnit.DAYS) }.toList()
-    val yData = timeSeries.getEntries().map { (_, value) -> value }.toList()
-    val series = chart.addSeries("Data", xData, yData)
-    series.marker = SeriesMarkers.NONE
+//    val xData = timeSeries.map { (date, _) -> timeSeries.getKeyAtIndex(0).until(date, ChronoUnit.DAYS) }.toList()
+//    val yData = timeSeries.map { (_, value) -> value }.toList()
+//    val series = chart.addSeries("Data", xData, yData)
+//    series.marker = SeriesMarkers.NONE
 
     SwingWrapper(chart).displayChart()
 }
@@ -48,7 +46,7 @@ fun main() {
     val seed = 123
     val random = Random(seed)
     val size = 150
-    val ts = ImmutableLocalDateDoubleTimeSeries.of(
+    val ts = LocalDateDoubleTimeSeries.of(
         List(size) { index -> LocalDate.of(2023, 1, 1).plusDays(index.toLong()) },
         List(size) { _ -> random.nextDouble() - 0.5 }
     )

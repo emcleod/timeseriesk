@@ -4,11 +4,11 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
-class ImmutableLocalDateTimeSeriesFunctionalTest {
- 
+class LocalDateTimeSeriesFunctionalTest {
+
     @Test
     fun testFilter() {
-        val timeSeries = ImmutableLocalDateTimeSeries.of(
+        val timeSeries = LocalDateTimeSeries.of(
             listOf(
                 LocalDate.of(2023, 1, 1),
                 LocalDate.of(2023, 1, 2),
@@ -32,7 +32,7 @@ class ImmutableLocalDateTimeSeriesFunctionalTest {
 
     @Test
     fun testMap() {
-        val timeSeries = ImmutableLocalDateTimeSeries.of(
+        val timeSeries = LocalDateTimeSeries.of(
             listOf(
                 LocalDate.of(2023, 1, 1),
                 LocalDate.of(2023, 1, 2),
@@ -41,17 +41,17 @@ class ImmutableLocalDateTimeSeriesFunctionalTest {
             listOf(10.1, 20.2, 30.3)
         )
 
-        val transform: (Map.Entry<LocalDate, Double>) -> Int = { (_, value) -> value.toInt() }
+        val transform: (Map.Entry<LocalDate, Double>) -> Double = { (_, value) -> value * 2.0 }
         val mappedTimeSeries = timeSeries.map(transform)
 
-        assertEquals(10, mappedTimeSeries[LocalDate.of(2023, 1, 1)])
-        assertEquals(20, mappedTimeSeries[LocalDate.of(2023, 1, 2)])
-        assertEquals(30, mappedTimeSeries[LocalDate.of(2023, 1, 3)])
+        assertEquals(20.2, mappedTimeSeries[LocalDate.of(2023, 1, 1)])
+        assertEquals(40.4, mappedTimeSeries[LocalDate.of(2023, 1, 2)])
+        assertEquals(60.6, mappedTimeSeries[LocalDate.of(2023, 1, 3)])
     }
 
     @Test
     fun testFold() {
-        val timeSeries = ImmutableLocalDateTimeSeries.of(
+        val timeSeries = LocalDateTimeSeries.of(
             listOf(
                 LocalDate.of(2023, 1, 1),
                 LocalDate.of(2023, 1, 2),
@@ -70,7 +70,7 @@ class ImmutableLocalDateTimeSeriesFunctionalTest {
 
     @Test
     fun testReduce() {
-        val timeSeries = ImmutableLocalDateTimeSeries.of(
+        val timeSeries = LocalDateTimeSeries.of(
             listOf(
                 LocalDate.of(2023, 1, 1),
                 LocalDate.of(2023, 1, 2),
@@ -78,16 +78,16 @@ class ImmutableLocalDateTimeSeriesFunctionalTest {
             ),
             listOf(10.0, 20.0, 30.0)
         )
-    
+
         val initialValue = 0.0
         val reduceResult = timeSeries.reduce(initialValue) { acc, value -> acc + value }
-    
+
         assertEquals(60.0, reduceResult, 0.0)
     }
 
     @Test
     fun testForEach() {
-        val timeSeries = ImmutableLocalDateTimeSeries.of(
+        val timeSeries = LocalDateTimeSeries.of(
             listOf(
                 LocalDate.of(2023, 1, 1),
                 LocalDate.of(2023, 1, 2),
@@ -111,9 +111,9 @@ class ImmutableLocalDateTimeSeriesFunctionalTest {
         }
     }
 
-    @Test 
+    @Test
     fun testAny() {
-        val timeSeries = ImmutableLocalDateTimeSeries.of(
+        val timeSeries = LocalDateTimeSeries.of(
             listOf(
                 LocalDate.of(2023, 1, 1),
                 LocalDate.of(2023, 1, 2),
@@ -133,9 +133,9 @@ class ImmutableLocalDateTimeSeriesFunctionalTest {
         assertFalse(timeSeries.any(noMatchValue))
     }
 
-    @Test 
+    @Test
     fun testAll() {
-        val timeSeries = ImmutableLocalDateTimeSeries.of(
+        val timeSeries = LocalDateTimeSeries.of(
             listOf(
                 LocalDate.of(2023, 1, 1),
                 LocalDate.of(2023, 1, 2),
@@ -145,7 +145,8 @@ class ImmutableLocalDateTimeSeriesFunctionalTest {
         )
 
         val matchKey: (Map.Entry<LocalDate, Double>) -> Boolean = { (key, _) -> key.isBefore(LocalDate.of(2023, 1, 6)) }
-        val noMatchKey: (Map.Entry<LocalDate, Double>) -> Boolean = { (key, _) -> key.isAfter(LocalDate.of(2023, 1, 2)) }
+        val noMatchKey: (Map.Entry<LocalDate, Double>) -> Boolean =
+            { (key, _) -> key.isAfter(LocalDate.of(2023, 1, 2)) }
         val matchValue: (Map.Entry<LocalDate, Double>) -> Boolean = { (_, value) -> value > 0 }
         val noMatchValue: (Map.Entry<LocalDate, Double>) -> Boolean = { (_, value) -> value < 30 }
 

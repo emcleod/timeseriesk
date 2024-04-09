@@ -1,6 +1,6 @@
 package org.emcleod.timeseries.analysis
 
-import org.emcleod.timeseries.ImmutableLocalDateDoubleTimeSeries
+import org.emcleod.timeseries.LocalDateDoubleTimeSeries
 import java.time.LocalDate
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
@@ -11,7 +11,7 @@ class AutocorrelationTest {
     
     @Test
     fun testAutocorrelationWithLag0() {
-        val timeSeries = ImmutableLocalDateDoubleTimeSeries.fromMap(
+        val timeSeries = LocalDateDoubleTimeSeries.fromMap(
             sortedMapOf(
                 LocalDate.of(2023, 1, 1) to 1.0,
                 LocalDate.of(2023, 1, 2) to 2.0,
@@ -26,7 +26,7 @@ class AutocorrelationTest {
 
     @Test
     fun testAutocorrelationWithPositiveLag() {
-        val timeSeries = ImmutableLocalDateDoubleTimeSeries.fromMap(
+        val timeSeries = LocalDateDoubleTimeSeries.fromMap(
             sortedMapOf(
                 LocalDate.of(2023, 1, 1) to 1.0,
                 LocalDate.of(2023, 1, 2) to 2.0,
@@ -41,7 +41,7 @@ class AutocorrelationTest {
 
     @Test
     fun testAutocorrelationWithNegativeLag() {
-        val timeSeries = ImmutableLocalDateDoubleTimeSeries.fromMap(
+        val timeSeries = LocalDateDoubleTimeSeries.fromMap(
             sortedMapOf(
                 LocalDate.of(2023, 1, 1) to 1.0,
                 LocalDate.of(2023, 1, 2) to 2.0,
@@ -57,7 +57,7 @@ class AutocorrelationTest {
 
     @Test
     fun testAutocorrelationSeriesPerfectCorrelation() {
-        val ts = ImmutableLocalDateDoubleTimeSeries.fromMap(
+        val ts = LocalDateDoubleTimeSeries.fromMap(
             sortedMapOf(
                 LocalDate.of(2024, 1, 1) to 1.0,
                 LocalDate.of(2024, 1, 2) to 2.0,
@@ -85,7 +85,7 @@ class AutocorrelationTest {
         val seed = 123
         val random = Random(seed)
         val size = 150
-        val ts = ImmutableLocalDateDoubleTimeSeries.of(
+        val ts = LocalDateDoubleTimeSeries.of(
             List(size) { index -> LocalDate.of(2023, 1, 1).plusDays(index.toLong()) },
             List(size) { _ -> random.nextDouble() }
         )
@@ -101,7 +101,7 @@ class AutocorrelationTest {
 
     @Test
     fun testAutocorrelationWithEmptySeries() {
-        val ts = ImmutableLocalDateDoubleTimeSeries.empty()
+        val ts = LocalDateDoubleTimeSeries.empty()
         assertThrows(IllegalArgumentException::class.java) {
             autocorrelation(ts, 1)
         }
@@ -109,7 +109,7 @@ class AutocorrelationTest {
 
     @Test
     fun testAutocorrelationWithInsufficientData() {
-        val ts = ImmutableLocalDateDoubleTimeSeries.of(
+        val ts = LocalDateDoubleTimeSeries.of(
             listOf(LocalDate.of(2023, 1, 1)), listOf(0.0)
         )
         assertThrows(IllegalArgumentException::class.java) {
