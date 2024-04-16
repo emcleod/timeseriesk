@@ -35,6 +35,7 @@ dependencies {
     testImplementation("org.mockito:mockito-junit-jupiter:4.0.0")
     testImplementation("org.mockito:mockito-inline:4.0.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
+    testImplementation("io.kotlintest:kotlintest-runner-junit5:3.4.2")
 }
 
 kotlin {

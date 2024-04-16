@@ -24,23 +24,6 @@ fun generateMASeries(
     }
 }
 
-//fun generateMAQSeries(
-//    size: Int,
-//    thetas: List<Double>,
-//    mean: Double = 0.0,
-//    scale: Double = 1.0
-//): List<Pair<Int, Double>> {
-//    val q = thetas.size
-//    val whiteNoise = generateWithUniformErrors(size + q, mean, scale)
-//
-//    return whiteNoise.take(size).mapIndexed { index, (_, current) ->
-//        val maValue = current + (1..q).sumOf { i ->
-//            if (index - i >= 0) thetas[i - 1] * whiteNoise[index - i].second else 0.0
-//        }
-//        Pair(index, maValue)
-//    }
-//}
-
 fun generateMAQSeries(
     size: Int,
     thetas: List<Double>,
